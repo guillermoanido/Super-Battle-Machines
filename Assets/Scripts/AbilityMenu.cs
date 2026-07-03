@@ -7,7 +7,8 @@ public class AbilityMenu : MonoBehaviour
     private const int VisibleSlots = 4;
     private const int MinOffset = 0;
     private const int FirstAbility = 0;
-    private const int ScrollStep = 1;
+    private const int PageStep = VisibleSlots;
+    private const int LastItemOffset = 1;
 
     [Header("Data")]
     [SerializeField] private List<AbilityData> abilities = new();
@@ -37,17 +38,23 @@ public class AbilityMenu : MonoBehaviour
 
     public void ScrollDown()
     {
-        scrollOffset = Mathf.Min(scrollOffset + ScrollStep, MaxOffset());
+        scrollOffset = Mathf.Min(scrollOffset + PageStep, LastPageOffset());
         Refresh();
     }
 
     public void ScrollUp()
     {
-        scrollOffset = Mathf.Max(scrollOffset - ScrollStep, MinOffset);
+        scrollOffset = Mathf.Max(scrollOffset - PageStep, MinOffset);
         Refresh();
     }
 
-    private int MaxOffset() => Mathf.Max(MinOffset, abilities.Count - VisibleSlots);
+    private int LastPageOffset()
+    {
+        if (abilities.Count == FirstAbility)
+            return MinOffset;
+
+        return (abilities.Count - LastItemOffset) / VisibleSlots * VisibleSlots;
+    }
 
     private void Refresh()
     {
