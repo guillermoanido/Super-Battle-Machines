@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Dash
   m_EditorClassIdentifier: Assembly-CSharp::AbilityData
   abilityName: Dash
-  description: Dash and Dodge
-  power: 0
+  description: Speed +5
+  effect: 3
+  power: 5
   icon: {fileID: 0}

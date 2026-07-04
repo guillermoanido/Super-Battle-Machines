@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilityData
   abilityName: Flamethrower
   description: Burn 1
-  power: 0
+  effect: 4
+  power: 1
   icon: {fileID: 0}

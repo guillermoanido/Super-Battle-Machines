@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilityData
   abilityName: Bazooka
   description: Deal 10dmg
-  power: 0
+  effect: 0
+  power: 10
   icon: {fileID: 0}

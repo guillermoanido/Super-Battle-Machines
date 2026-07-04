@@ -14,10 +14,15 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private AbilityMenu abilityMenu;
     [SerializeField] private EnemyGenerator enemyGenerator;
 
+    [Header("Testing")]
+    [SerializeField] private bool autoPlayPlayer;
+
     public event Action<Combatant> PlayerWon;
     public event Action PlayerLost;
 
     private AbilityData pendingPlayerAbility;
+    private IEnemyStrategy enemyStrategy;
+    private IEnemyStrategy autoPlayStrategy;
 
     private void OnEnable()
     {
@@ -39,6 +44,10 @@ public class BattleManager : MonoBehaviour
         if (enemyGenerator != null)
             enemy.Initialize(enemyGenerator.CreateRandomEnemy());
 
+        enemyStrategy = EnemyStrategyFactory.Create(enemy.StrategyType);
+        autoPlayStrategy = EnemyStrategyFactory.Create(EnemyStrategyType.Aggressive);
+        Debug.Log($"Battle start — enemy strategy: {enemy.StrategyType}.");
+
         StartCoroutine(RunBattle());
     }
 
@@ -54,8 +63,13 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator RunBattle()
     {
+        var round = 0;
+
         while (player.IsAlive && enemy.IsAlive)
         {
+            round++;
+            Debug.Log($"===== Round {round} =====");
+
             var playerFirst = player.Speed >= enemy.Speed;
             var first = playerFirst ? player : enemy;
             var second = playerFirst ? enemy : player;
@@ -75,36 +89,44 @@ public class BattleManager : MonoBehaviour
     private IEnumerator TakeTurn(Combatant attacker, Combatant defender)
     {
         var actions = ActionsFor(attacker, defender);
+        Debug.Log($"{attacker.Name}'s turn — {actions} action(s).");
+
         for (var i = 0; i < actions && defender.IsAlive; i++)
             yield return PerformAction(attacker, defender);
     }
 
     private IEnumerator PerformAction(Combatant attacker, Combatant defender)
     {
-        var ability = attacker == player
-            ? null
-            : EnemyAI.ChooseAbility(attacker);
-
-        if (attacker == player)
+        if (IsPlayer(attacker) && !autoPlayPlayer)
         {
+            yield return WaitForPlayerChoice();
+            UseAbility(attacker, defender, pendingPlayerAbility);
             pendingPlayerAbility = null;
-            while (pendingPlayerAbility == null)
-                yield return null;
-
-            ability = pendingPlayerAbility;
-            pendingPlayerAbility = null;
-        }
-        else
-        {
-            yield return new WaitForSeconds(EnemyActionDelay);
+            yield break;
         }
 
-        if (ability != null)
-        {
-            Debug.Log($"{attacker.Name} used {ability.abilityName} on {defender.Name}.");
-            defender.ReceiveAttack(ability);
-        }
+        yield return new WaitForSeconds(EnemyActionDelay);
+        var strategy = IsPlayer(attacker) ? autoPlayStrategy : enemyStrategy;
+        UseAbility(attacker, defender, strategy.ChooseAbility(attacker, defender));
     }
+
+    private IEnumerator WaitForPlayerChoice()
+    {
+        pendingPlayerAbility = null;
+        while (pendingPlayerAbility == null)
+            yield return null;
+    }
+
+    private void UseAbility(Combatant user, Combatant opponent, AbilityData ability)
+    {
+        if (ability == null)
+            return;
+
+        Debug.Log($"{user.Name} used {ability.abilityName} ({ability.effect} {ability.power}).");
+        AbilityResolver.Apply(ability, user, opponent);
+    }
+
+    private bool IsPlayer(Combatant combatant) => combatant == player;
 
     private int ActionsFor(Combatant attacker, Combatant defender)
     {

@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilityData
   abilityName: Bash
   description: Deal 5 dmg
-  power: 0
+  effect: 0
+  power: 5
   icon: {fileID: 0}

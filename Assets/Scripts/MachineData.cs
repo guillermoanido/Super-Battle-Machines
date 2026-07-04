@@ -8,6 +8,7 @@ public class MachineData : ScriptableObject
     public int maxHP;
     public int defense;
     public int speed;
+    public EnemyStrategyType strategy;
     public Sprite sprite;
     public List<AbilityData> startingAbilities = new();
 }

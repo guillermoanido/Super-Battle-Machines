@@ -28,13 +28,26 @@ public class EnemyGenerator : MonoBehaviour
         machine.maxHP = RandomInRange(minHP, maxHP);
         machine.defense = RandomInRange(minDefense, maxDefense);
         machine.speed = RandomInRange(minSpeed, maxSpeed);
+        machine.strategy = RandomStrategyType();
         machine.startingAbilities = PickRandomAbilities();
         return machine;
     }
 
+    private static EnemyStrategyType RandomStrategyType()
+    {
+        var values = System.Enum.GetValues(typeof(EnemyStrategyType));
+        return (EnemyStrategyType)values.GetValue(Random.Range(FirstIndex, values.Length));
+    }
+
     private List<AbilityData> PickRandomAbilities()
     {
-        var available = new List<AbilityData>(abilityPool);
+        var available = new List<AbilityData>();
+        foreach (var ability in abilityPool)
+        {
+            if (ability != null)
+                available.Add(ability);
+        }
+
         var chosen = new List<AbilityData>();
         var count = Mathf.Min(AbilitiesPerEnemy, available.Count);
 

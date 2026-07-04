@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilityData
   abilityName: Nuke
   description: Win
-  power: 0
+  effect: 0
+  power: 100
   icon: {fileID: 0}
