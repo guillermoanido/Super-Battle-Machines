@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class AbilityMenu : MonoBehaviour
 {
+    public event Action<AbilityData> AbilityChosen;
+
     private const int VisibleSlots = 4;
     private const int MinOffset = 0;
     private const int FirstAbility = 0;
@@ -66,7 +69,7 @@ public class AbilityMenu : MonoBehaviour
 
             var abilityIndex = scrollOffset + i;
             if (abilityIndex < abilities.Count)
-                slot.Bind(abilities[abilityIndex], ShowDescription);
+                slot.Bind(abilities[abilityIndex], ShowDescription, SelectAbility);
             else
                 slot.Clear();
         }
@@ -76,6 +79,12 @@ public class AbilityMenu : MonoBehaviour
     {
         if (abilities.Count > FirstAbility)
             ShowDescription(abilities[scrollOffset]);
+    }
+
+    private void SelectAbility(AbilityData ability)
+    {
+        ShowDescription(ability);
+        AbilityChosen?.Invoke(ability);
     }
 
     private void ShowDescription(AbilityData ability)

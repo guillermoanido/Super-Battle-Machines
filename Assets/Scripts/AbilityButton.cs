@@ -1,28 +1,31 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class AbilityButton : MonoBehaviour
+public class AbilityButton : MonoBehaviour, IPointerEnterHandler, ISelectHandler
 {
     [SerializeField] private TMP_Text label;
     [SerializeField] private Image iconImage;
     [SerializeField] private Button button;
 
     private AbilityData ability;
-    private Action<AbilityData> onSelected;
+    private Action<AbilityData> onFocused;
+    private Action<AbilityData> onChosen;
 
     private void Awake()
     {
         if (button == null)
             button = GetComponent<Button>();
-        button.onClick.AddListener(Select);
+        button.onClick.AddListener(Choose);
     }
 
-    public void Bind(AbilityData data, Action<AbilityData> selectedCallback)
+    public void Bind(AbilityData data, Action<AbilityData> focusedCallback, Action<AbilityData> chosenCallback)
     {
         ability = data;
-        onSelected = selectedCallback;
+        onFocused = focusedCallback;
+        onChosen = chosenCallback;
 
         if (label != null)
             label.text = data.abilityName;
@@ -38,7 +41,8 @@ public class AbilityButton : MonoBehaviour
     public void Clear()
     {
         ability = null;
-        onSelected = null;
+        onFocused = null;
+        onChosen = null;
 
         if (label != null)
             label.text = string.Empty;
@@ -48,9 +52,19 @@ public class AbilityButton : MonoBehaviour
         button.interactable = false;
     }
 
-    private void Select()
+    public void OnPointerEnter(PointerEventData eventData) => Focus();
+
+    public void OnSelect(BaseEventData eventData) => Focus();
+
+    private void Focus()
     {
         if (ability != null)
-            onSelected?.Invoke(ability);
+            onFocused?.Invoke(ability);
+    }
+
+    private void Choose()
+    {
+        if (ability != null)
+            onChosen?.Invoke(ability);
     }
 }
