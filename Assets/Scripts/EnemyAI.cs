@@ -1,10 +1,8 @@
-using UnityEngine;
-
-public class EnemyAI : MonoBehaviour
+public static class EnemyAI
 {
     private const int NoAbilities = 0;
 
-    public AbilityData ChooseAbility(Combatant self)
+    public static AbilityData ChooseAbility(Combatant self)
     {
         var abilities = self.Abilities;
         if (abilities == null || abilities.Count == NoAbilities)

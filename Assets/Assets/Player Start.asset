@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 679ee12c361ecd447bc10cbb309fffee, type: 3}
   m_Name: Player Start
   m_EditorClassIdentifier: Assembly-CSharp::MachineData
-  machineName: 
-  maxHP: 0
+  machineName: Player
+  maxHP: 10
   defense: 0
-  speed: 0
+  speed: 1
   sprite: {fileID: 0}
   startingAbilities: []

@@ -11,7 +11,6 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField] private Combatant player;
     [SerializeField] private Combatant enemy;
-    [SerializeField] private EnemyAI enemyAI;
     [SerializeField] private AbilityMenu abilityMenu;
     [SerializeField] private EnemyGenerator enemyGenerator;
 
@@ -34,10 +33,23 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        if (!HasRequiredReferences())
+            return;
+
         if (enemyGenerator != null)
             enemy.Initialize(enemyGenerator.CreateRandomEnemy());
 
         StartCoroutine(RunBattle());
+    }
+
+    private bool HasRequiredReferences()
+    {
+        if (player == null)
+            Debug.LogError("BattleManager: Player is not assigned.", this);
+        if (enemy == null)
+            Debug.LogError("BattleManager: Enemy is not assigned.", this);
+
+        return player != null && enemy != null;
     }
 
     private IEnumerator RunBattle()
@@ -71,7 +83,7 @@ public class BattleManager : MonoBehaviour
     {
         var ability = attacker == player
             ? null
-            : enemyAI.ChooseAbility(attacker);
+            : EnemyAI.ChooseAbility(attacker);
 
         if (attacker == player)
         {
@@ -88,7 +100,10 @@ public class BattleManager : MonoBehaviour
         }
 
         if (ability != null)
+        {
+            Debug.Log($"{attacker.Name} used {ability.abilityName} on {defender.Name}.");
             defender.ReceiveAttack(ability);
+        }
     }
 
     private int ActionsFor(Combatant attacker, Combatant defender)
