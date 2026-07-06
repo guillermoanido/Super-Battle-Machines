@@ -10,6 +10,7 @@ public enum AbilityEffect
 }
 
 [CreateAssetMenu(fileName = "Ability", menuName = "Battle Machines/Ability")]
+/// <summary>Asset defining an ability: its effect kind and magnitude (power), plus display info.</summary>
 public class AbilityData : ScriptableObject
 {
     public string abilityName;

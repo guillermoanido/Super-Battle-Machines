@@ -4,6 +4,7 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
 
+/// <summary>PC settings: resolution, fullscreen, quality, VSync, and volumes. Persists via PlayerPrefs.</summary>
 public class SettingsMenu : MonoBehaviour
 {
     private const string MasterVolumeParam = "MasterVolume";

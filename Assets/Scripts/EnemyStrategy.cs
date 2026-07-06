@@ -8,11 +8,13 @@ public enum EnemyStrategyType
     Defensive
 }
 
+/// <summary>An enemy decision-making behavior. Implement this to add new AI styles.</summary>
 public interface IEnemyStrategy
 {
     AbilityData ChooseAbility(Combatant self, Combatant opponent);
 }
 
+/// <summary>Creates the strategy instance for a given strategy type.</summary>
 public static class EnemyStrategyFactory
 {
     public static IEnemyStrategy Create(EnemyStrategyType type)
@@ -29,7 +31,7 @@ public static class EnemyStrategyFactory
     }
 }
 
-// Always throws its hardest-hitting ability.
+/// <summary>Always throws its hardest-hitting ability.</summary>
 public class AggressiveStrategy : IEnemyStrategy
 {
     public AbilityData ChooseAbility(Combatant self, Combatant opponent)
@@ -49,7 +51,7 @@ public class AggressiveStrategy : IEnemyStrategy
     }
 }
 
-// Picks any valid ability at random.
+/// <summary>Picks any valid ability at random.</summary>
 public class RandomStrategy : IEnemyStrategy
 {
     private const int FirstIndex = 0;
@@ -70,7 +72,7 @@ public class RandomStrategy : IEnemyStrategy
     }
 }
 
-// Heals or shields when hurt, otherwise attacks hardest.
+/// <summary>Heals or shields when hurt, otherwise attacks hardest.</summary>
 public class DefensiveStrategy : IEnemyStrategy
 {
     private const float LowHealthRatio = 0.5f;

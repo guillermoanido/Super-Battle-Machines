@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
+/// <summary>In-game pause menu: Esc toggles it, freezes time, and can exit to the main menu.</summary>
 public class PauseMenu : MonoBehaviour
 {
     private const float PausedTimeScale = 0f;
@@ -36,7 +37,7 @@ public class PauseMenu : MonoBehaviour
     {
         IsPaused = true;
         Time.timeScale = PausedTimeScale;
-        SetActiveSafe(pauseMenuPanel, true);
+        pauseMenuPanel.SetActiveSafe(true);
     }
 
     public void Resume()
@@ -54,13 +55,13 @@ public class PauseMenu : MonoBehaviour
     {
         IsPaused = false;
         Time.timeScale = NormalTimeScale;
-        SetActiveSafe(pauseMenuPanel, false);
-        SetActiveSafe(settingsPanel, false);
+        pauseMenuPanel.SetActiveSafe(false);
+        settingsPanel.SetActiveSafe(false);
     }
 
-    public void OpenSettings() => SetActiveSafe(settingsPanel, true);
+    public void OpenSettings() => settingsPanel.SetActiveSafe(true);
 
-    public void CloseSettings() => SetActiveSafe(settingsPanel, false);
+    public void CloseSettings() => settingsPanel.SetActiveSafe(false);
 
     public void ReturnToMainMenu()
     {
@@ -69,18 +70,5 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene(mainMenuScene);
     }
 
-    public void QuitGame()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
-    }
-
-    private static void SetActiveSafe(GameObject target, bool active)
-    {
-        if (target != null)
-            target.SetActive(active);
-    }
+    public void QuitGame() => GameApplication.Quit();
 }

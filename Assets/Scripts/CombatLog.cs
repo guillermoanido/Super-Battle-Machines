@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+/// <summary>Shows the BattleManager's recent log lines on screen; clears each round.</summary>
 public class CombatLog : MonoBehaviour
 {
     private const int MaxLines = 6;

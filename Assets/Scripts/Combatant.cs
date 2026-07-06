@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>A fighter's live state (HP, armor, speed, abilities). Damage chips armor before HP.</summary>
 public class Combatant : MonoBehaviour
 {
     private const int MinDamage = 1;

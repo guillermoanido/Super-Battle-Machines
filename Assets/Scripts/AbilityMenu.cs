@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+/// <summary>Player ability grid: shows the owner Combatant's abilities 4 at a time, paged by the arrows.</summary>
 public class AbilityMenu : MonoBehaviour
 {
     public event Action<AbilityData> AbilityChosen;

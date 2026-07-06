@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
+/// <summary>One ability slot. Hover/highlight previews (focus callback); click commits (chosen callback).</summary>
 public class AbilityButton : MonoBehaviour, IPointerEnterHandler, ISelectHandler
 {
     [SerializeField] private TMP_Text label;

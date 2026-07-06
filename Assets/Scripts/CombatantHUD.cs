@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/// <summary>Binds a Combatant's stats to UI: HP bar + text, Defense, and Speed. Updates on StatsChanged.</summary>
 public class CombatantHUD : MonoBehaviour
 {
     [SerializeField] private Combatant combatant;

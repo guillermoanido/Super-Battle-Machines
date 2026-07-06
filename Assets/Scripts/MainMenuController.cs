@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Playables;
 
+/// <summary>Main menu: Start (optionally plays a cinematic then loads a scene), Settings, and Quit.</summary>
 public class MainMenuController : MonoBehaviour
 {
     private const float NormalTimeScale = 1f;
@@ -19,7 +20,7 @@ public class MainMenuController : MonoBehaviour
     private void Start()
     {
         Time.timeScale = NormalTimeScale;
-        SetActiveSafe(settingsPanel, false);
+        settingsPanel.SetActiveSafe(false);
     }
 
     public void StartGame()
@@ -34,7 +35,7 @@ public class MainMenuController : MonoBehaviour
             return;
         }
 
-        SetActiveSafe(mainButtons, false);
+        mainButtons.SetActiveSafe(false);
         cinematicDirector.stopped += OnCinematicFinished;
         cinematicDirector.Play();
     }
@@ -56,22 +57,9 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene(sceneToLoad);
     }
 
-    public void OpenSettings() => SetActiveSafe(settingsPanel, true);
+    public void OpenSettings() => settingsPanel.SetActiveSafe(true);
 
-    public void CloseSettings() => SetActiveSafe(settingsPanel, false);
+    public void CloseSettings() => settingsPanel.SetActiveSafe(false);
 
-    public void QuitGame()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
-    }
-
-    private static void SetActiveSafe(GameObject target, bool active)
-    {
-        if (target != null)
-            target.SetActive(active);
-    }
+    public void QuitGame() => GameApplication.Quit();
 }

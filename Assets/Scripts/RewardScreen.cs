@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 
+/// <summary>On victory, shows the defeated enemy's abilities so the player can claim one, then starts the next fight.</summary>
 public class RewardScreen : MonoBehaviour
 {
     [SerializeField] private BattleManager battleManager;
@@ -22,12 +23,9 @@ public class RewardScreen : MonoBehaviour
 
     private void Show(Combatant defeatedEnemy)
     {
-        if (panel != null)
-            panel.SetActive(true);
+        panel.SetActiveSafe(true);
 
         var rewards = defeatedEnemy.Abilities;
-        Debug.Log($"RewardScreen: enemy has {rewards.Count} abilities, {rewardSlots.Length} reward slots assigned.");
-
         for (var i = 0; i < rewardSlots.Length; i++)
         {
             var slot = rewardSlots[i];
@@ -50,9 +48,7 @@ public class RewardScreen : MonoBehaviour
     private void Claim(AbilityData ability)
     {
         battleManager.ClaimAbility(ability);
-        if (panel != null)
-            panel.SetActive(false);
-
+        panel.SetActiveSafe(false);
         battleManager.StartBattle();
     }
 }

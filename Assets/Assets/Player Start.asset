@@ -21,5 +21,4 @@ MonoBehaviour:
   startingAbilities:
   - {fileID: 11400000, guid: b9ef02b48c68c964e83c3b4005a63308, type: 2}
   - {fileID: 11400000, guid: 4dc054a6c0f320746aa0d2c8155a5d2f, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 6bf8f869136401b45ad3ae3f7b6f17d1, type: 2}

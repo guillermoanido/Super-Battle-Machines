@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+/// <summary>Runs the turn-based battle loop: turn order by Speed, extra actions for faster machines, and win/lose resolution.</summary>
 public class BattleManager : MonoBehaviour
 {
     private const int MinActions = 1;
@@ -30,6 +31,8 @@ public class BattleManager : MonoBehaviour
     {
         if (abilityMenu != null)
             abilityMenu.AbilityChosen += OnPlayerChoseAbility;
+        else
+            Debug.LogWarning("BattleManager: Ability Menu is not assigned — player clicks will do nothing.", this);
     }
 
     private void OnDisable()
@@ -109,6 +112,7 @@ public class BattleManager : MonoBehaviour
     {
         if (IsPlayer(attacker) && !autoPlayPlayer)
         {
+            Log($"{attacker.Name}: choose an ability...");
             yield return WaitForPlayerChoice();
             UseAbility(attacker, defender, pendingPlayerAbility);
             pendingPlayerAbility = null;

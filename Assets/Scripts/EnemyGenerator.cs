@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>Builds a random enemy MachineData at runtime: random stats, strategy, and 4 abilities from the pool.</summary>
 public class EnemyGenerator : MonoBehaviour
 {
     private const int AbilitiesPerEnemy = 4;

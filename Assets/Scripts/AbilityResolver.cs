@@ -1,3 +1,4 @@
+/// <summary>Applies an ability's effect to the right target (damage hits the opponent; buffs/heals hit the user).</summary>
 public static class AbilityResolver
 {
     public static void Apply(AbilityData ability, Combatant user, Combatant opponent)
