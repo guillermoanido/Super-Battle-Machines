@@ -19,4 +19,7 @@ MonoBehaviour:
   strategy: 1
   sprite: {fileID: 0}
   startingAbilities:
-  - {fileID: 11400000, guid: b9ef02b48c68c964e83c3b4005a63308, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

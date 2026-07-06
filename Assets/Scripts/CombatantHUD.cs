@@ -6,6 +6,7 @@ public class CombatantHUD : MonoBehaviour
 {
     [SerializeField] private Combatant combatant;
     [SerializeField] private Slider healthBar;
+    [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text defenseText;
     [SerializeField] private TMP_Text speedText;
 
@@ -33,6 +34,8 @@ public class CombatantHUD : MonoBehaviour
             healthBar.maxValue = source.MaxHP;
             healthBar.value = source.CurrentHP;
         }
+        if (healthText != null)
+            healthText.text = $"{source.CurrentHP}/{source.MaxHP}";
         if (defenseText != null)
             defenseText.text = source.CurrentDefense.ToString();
         if (speedText != null)

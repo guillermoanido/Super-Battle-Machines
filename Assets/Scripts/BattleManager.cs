@@ -19,6 +19,8 @@ public class BattleManager : MonoBehaviour
 
     public event Action<Combatant> PlayerWon;
     public event Action PlayerLost;
+    public event Action<string> LogMessage;
+    public event Action LogCleared;
 
     private AbilityData pendingPlayerAbility;
     private IEnemyStrategy enemyStrategy;
@@ -41,12 +43,19 @@ public class BattleManager : MonoBehaviour
         if (!HasRequiredReferences())
             return;
 
+        autoPlayStrategy = EnemyStrategyFactory.Create(EnemyStrategyType.Aggressive);
+        StartBattle();
+    }
+
+    public void StartBattle()
+    {
+        player.RestoreFull();
+
         if (enemyGenerator != null)
             enemy.Initialize(enemyGenerator.CreateRandomEnemy());
 
         enemyStrategy = EnemyStrategyFactory.Create(enemy.StrategyType);
-        autoPlayStrategy = EnemyStrategyFactory.Create(EnemyStrategyType.Aggressive);
-        Debug.Log($"Battle start — enemy strategy: {enemy.StrategyType}.");
+        Log($"A wild {enemy.Name} appears!");
 
         StartCoroutine(RunBattle());
     }
@@ -68,7 +77,8 @@ public class BattleManager : MonoBehaviour
         while (player.IsAlive && enemy.IsAlive)
         {
             round++;
-            Debug.Log($"===== Round {round} =====");
+            LogCleared?.Invoke();
+            Log($"— Round {round} —");
 
             var playerFirst = player.Speed >= enemy.Speed;
             var first = playerFirst ? player : enemy;
@@ -89,7 +99,7 @@ public class BattleManager : MonoBehaviour
     private IEnumerator TakeTurn(Combatant attacker, Combatant defender)
     {
         var actions = ActionsFor(attacker, defender);
-        Debug.Log($"{attacker.Name}'s turn — {actions} action(s).");
+        Log($"{attacker.Name}'s turn ({actions} action(s)).");
 
         for (var i = 0; i < actions && defender.IsAlive; i++)
             yield return PerformAction(attacker, defender);
@@ -122,11 +132,17 @@ public class BattleManager : MonoBehaviour
         if (ability == null)
             return;
 
-        Debug.Log($"{user.Name} used {ability.abilityName} ({ability.effect} {ability.power}).");
+        Log($"{user.Name} used {ability.abilityName}!");
         AbilityResolver.Apply(ability, user, opponent);
     }
 
     private bool IsPlayer(Combatant combatant) => combatant == player;
+
+    private void Log(string message)
+    {
+        Debug.Log(message);
+        LogMessage?.Invoke(message);
+    }
 
     private int ActionsFor(Combatant attacker, Combatant defender)
     {
@@ -140,7 +156,7 @@ public class BattleManager : MonoBehaviour
     {
         player.LearnAbility(ability);
         if (abilityMenu != null)
-            abilityMenu.AddAbility(ability);
+            abilityMenu.Rebuild();
     }
 
     private void EndBattle()

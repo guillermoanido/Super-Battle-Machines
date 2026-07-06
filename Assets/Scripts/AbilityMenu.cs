@@ -9,12 +9,12 @@ public class AbilityMenu : MonoBehaviour
 
     private const int VisibleSlots = 4;
     private const int MinOffset = 0;
-    private const int FirstAbility = 0;
+    private const int EmptyCount = 0;
     private const int PageStep = VisibleSlots;
     private const int LastItemOffset = 1;
 
-    [Header("Data")]
-    [SerializeField] private List<AbilityData> abilities = new();
+    [Header("Owner (whose abilities to show)")]
+    [SerializeField] private Combatant owner;
 
     [Header("Slots (assign the 4 grid buttons)")]
     [SerializeField] private AbilityButton[] slots = new AbilityButton[VisibleSlots];
@@ -24,19 +24,15 @@ public class AbilityMenu : MonoBehaviour
 
     private int scrollOffset;
 
-    private void Start()
+    private List<AbilityData> Abilities => owner != null ? owner.Abilities : null;
+    private int Count => Abilities != null ? Abilities.Count : EmptyCount;
+
+    private void Start() => Rebuild();
+
+    public void Rebuild()
     {
         Refresh();
         ShowFirstVisibleDescription();
-    }
-
-    public void AddAbility(AbilityData ability)
-    {
-        if (ability == null || abilities.Contains(ability))
-            return;
-
-        abilities.Add(ability);
-        Refresh();
     }
 
     public void ScrollDown()
@@ -53,14 +49,15 @@ public class AbilityMenu : MonoBehaviour
 
     private int LastPageOffset()
     {
-        if (abilities.Count == FirstAbility)
+        if (Count == EmptyCount)
             return MinOffset;
 
-        return (abilities.Count - LastItemOffset) / VisibleSlots * VisibleSlots;
+        return (Count - LastItemOffset) / VisibleSlots * VisibleSlots;
     }
 
     private void Refresh()
     {
+        var abilities = Abilities;
         for (var i = 0; i < slots.Length; i++)
         {
             var slot = slots[i];
@@ -68,7 +65,7 @@ public class AbilityMenu : MonoBehaviour
                 continue;
 
             var abilityIndex = scrollOffset + i;
-            if (abilityIndex < abilities.Count)
+            if (abilities != null && abilityIndex < abilities.Count)
                 slot.Bind(abilities[abilityIndex], ShowDescription, SelectAbility);
             else
                 slot.Clear();
@@ -77,7 +74,8 @@ public class AbilityMenu : MonoBehaviour
 
     private void ShowFirstVisibleDescription()
     {
-        if (abilities.Count > FirstAbility)
+        var abilities = Abilities;
+        if (abilities != null && abilities.Count > scrollOffset)
             ShowDescription(abilities[scrollOffset]);
     }
 

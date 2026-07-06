@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f75eb5b004679e34cbb9a5756cd6b8eb, type: 3}
-  m_Name: Dash
+  m_Name: Brace
   m_EditorClassIdentifier: Assembly-CSharp::AbilityData
-  abilityName: Dash
-  description: Speed +5
-  effect: 3
+  abilityName: Brace
+  description: Defense +5
+  effect: 2
   power: 5
   icon: {fileID: 0}

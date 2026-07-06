@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: Player Start
   m_EditorClassIdentifier: Assembly-CSharp::MachineData
   machineName: Player
-  maxHP: 20
+  maxHP: 30
   defense: 0
   speed: 5
-  strategy: 0
+  strategy: 1
   sprite: {fileID: 0}
-  startingAbilities: []
+  startingAbilities:
+  - {fileID: 11400000, guid: b9ef02b48c68c964e83c3b4005a63308, type: 2}
+  - {fileID: 11400000, guid: 4dc054a6c0f320746aa0d2c8155a5d2f, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}

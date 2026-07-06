@@ -26,6 +26,8 @@ public class RewardScreen : MonoBehaviour
             panel.SetActive(true);
 
         var rewards = defeatedEnemy.Abilities;
+        Debug.Log($"RewardScreen: enemy has {rewards.Count} abilities, {rewardSlots.Length} reward slots assigned.");
+
         for (var i = 0; i < rewardSlots.Length; i++)
         {
             var slot = rewardSlots[i];
@@ -50,5 +52,7 @@ public class RewardScreen : MonoBehaviour
         battleManager.ClaimAbility(ability);
         if (panel != null)
             panel.SetActive(false);
+
+        battleManager.StartBattle();
     }
 }

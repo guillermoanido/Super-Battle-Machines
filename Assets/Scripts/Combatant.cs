@@ -46,6 +46,13 @@ public class Combatant : MonoBehaviour
         StatsChanged?.Invoke(this);
     }
 
+    public void RestoreFull()
+    {
+        CurrentHP = MaxHP;
+        CurrentDefense = MaxDefense;
+        StatsChanged?.Invoke(this);
+    }
+
     public void ReceiveDamage(int amount)
     {
         var damage = Mathf.Max(MinDamage, amount);
